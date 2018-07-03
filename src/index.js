@@ -1,9 +1,12 @@
+import { preProcessFile } from "typescript";
+
 /**
  * Devuelve la suma de los numeros
  * @param {string} expression Expresion de numeros separados por coma
  */
 export const sumNumberFrom = (expression) => {
-   return sum(parseNumbers(expression))
+   const numbers = parseNumbers(expression)
+   return sum(numbers)
 }
 
 function parseNumbers(expression) {
@@ -13,30 +16,17 @@ function parseNumbers(expression) {
 }
 
 function tokenize(expression) {
-   const separator = extractSeparator(expression)
-   const parsedExpression = extractExpression(expression)
+   const regex = new RegExp("//(.+);(.+)")
+   const matches = expression.match(regex)
+   let separator = ","
+   let parsedExpression = expression
+
+   if (matches) {
+      separator = matches[1]
+      parsedExpression = matches[2]
+   }
 
    return parsedExpression.split(separator)
-}
-
-function extractSeparator(expression) {
-   const separatorRegex = new RegExp("//(.+);")
-   const matches = expression.match(separatorRegex);
-   return getFirstGroupOrDefaultValue(matches, ',')
-}
-
-function extractExpression(expression) {
-   const separatorRegex = new RegExp("//.+;(.+)")
-   const matches = expression.match(separatorRegex);
-   return getFirstGroupOrDefaultValue(matches, expression)
-}
-
-function getFirstGroupOrDefaultValue(matches, defaultValue) {
-   if (matches) {
-      const [, capturedGroup] = matches
-      return capturedGroup;
-   }
-  return defaultValue
 }
 
 function sum(numbers) {
