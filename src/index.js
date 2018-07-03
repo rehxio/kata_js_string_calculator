@@ -1,5 +1,3 @@
-import { preProcessFile } from "typescript";
-
 /**
  * Devuelve la suma de los numeros
  * @param {string} expression Expresion de numeros separados por coma
